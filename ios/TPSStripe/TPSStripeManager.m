@@ -189,21 +189,7 @@ RCT_EXPORT_METHOD(createTokenWithCard:(NSDictionary *)params
 
     requestIsCompleted = NO;
 
-    STPCardParams *cardParams = [[STPCardParams alloc] init];
-
-    [cardParams setNumber: params[@"number"]];
-    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
-    [cardParams setExpYear: [params[@"expYear"] integerValue]];
-    [cardParams setCvc: params[@"cvc"]];
-
-    [cardParams setCurrency: params[@"currency"]];
-    [cardParams setName: params[@"name"]];
-    [cardParams setAddressLine1: params[@"addressLine1"]];
-    [cardParams setAddressLine2: params[@"addressLine2"]];
-    [cardParams setAddressCity: params[@"addressCity"]];
-    [cardParams setAddressState: params[@"addressState"]];
-    [cardParams setAddressCountry: params[@"addressCountry"]];
-    [cardParams setAddressZip: params[@"addressZip"]];
+    STPCardParams *cardParams = [self createCard:params];
 
     STPAPIClient *stripeAPIClient = [self newAPIClient];
 
@@ -291,6 +277,9 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     }
     if ([sourceType isEqualToString:@"alipay"]) {
             sourceParams = [STPSourceParams alipayParamsWithAmount:[[params objectForKey:@"amount"] unsignedIntegerValue] currency:params[@"currency"] returnURL:params[@"returnURL"]];
+    }
+    if ([sourceType isEqualToString:@"card"]) {
+            sourceParams = [STPSourceParams cardParamsWithCard:[self createCard:params]];
     }
 
     STPAPIClient* stripeAPIClient = [self newAPIClient];
@@ -462,6 +451,26 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
 }
 
 #pragma mark - Private
+
+- (STPCardParams *)createCard:(NSDictionary *)params {
+    STPCardParams *cardParams = [[STPCardParams alloc] init];
+    
+    [cardParams setNumber: params[@"number"]];
+    [cardParams setExpMonth: [params[@"expMonth"] integerValue]];
+    [cardParams setExpYear: [params[@"expYear"] integerValue]];
+    [cardParams setCvc: params[@"cvc"]];
+    
+    [cardParams setCurrency: params[@"currency"]];
+    [cardParams setName: params[@"name"]];
+    [cardParams setAddressLine1: params[@"addressLine1"]];
+    [cardParams setAddressLine2: params[@"addressLine2"]];
+    [cardParams setAddressCity: params[@"addressCity"]];
+    [cardParams setAddressState: params[@"addressState"]];
+    [cardParams setAddressCountry: params[@"addressCountry"]];
+    [cardParams setAddressZip: params[@"addressZip"]];
+    
+    return cardParams;
+}
 
 - (void)resolvePromise:(id)result {
     if (promiseResolver) {
@@ -660,6 +669,7 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     NSMutableDictionary *result = [@{} mutableCopy];
 
     // Source
+    [result setValue:source.stripeID forKey:@"sourceId"];
     [result setValue:source.clientSecret forKey:@"clientSecret"];
     [result setValue:@([source.created timeIntervalSince1970]) forKey:@"created"];
     [result setValue:source.currency forKey:@"currency"];

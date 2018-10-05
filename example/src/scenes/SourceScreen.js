@@ -11,26 +11,38 @@ export default class SourceScreen extends PureComponent {
   state = {
     loading: false,
     source: null,
+    error: null
   }
 
-  handleCreacteSourcePress = async () => {
+  handleCreateCardSourcePress = async () => {
     try {
-      this.setState({ loading: true, source: null })
+      this.setState({ loading: true, source: null, error: null })
 
       const source = await stripe.createSourceWithParams({
-        type: 'alipay',
-        amount: 50,
-        currency: 'EUR',
-        returnURL: 'example://stripe-redirect',
+        type: 'card',
+        currency: 'USD',
+        name: 'Joe Shmo',
+        
+        number: '1111222233334444',
+        expMonth: 1,
+        expYear: 2020,
+        cvc: '123',
+
+        addressLine1: '308 SW 6th St',
+        addressLine2: '',
+        addressCity: 'Bentonville',
+        addressState: 'AR',
+        addressCountry: 'USA',
+        addressZip: '72712',
       })
       this.setState({ loading: false, source })
     } catch (error) {
-      this.setState({ loading: false })
+      this.setState({ loading: false, error })
     }
   }
 
   render() {
-    const { loading, source } = this.state
+    const { loading, source, error } = this.state
 
     return (
       <View style={styles.container}>
@@ -41,15 +53,20 @@ export default class SourceScreen extends PureComponent {
           Click button to create a source.
         </Text>
         <Button
-          text="Create source for Alipay payment"
+          text="Create source for CARD payment"
           loading={loading}
-          onPress={this.handleCreacteSourcePress}
+          onPress={this.handleCreateCardSourcePress}
           {...testID('sourceButton')}
         />
         <View style={styles.source} {...testID('sourceObject')}>
           {source &&
             <Text style={styles.instruction}>
               Source: {JSON.stringify(source)}
+            </Text>
+          }
+          {error &&
+            <Text style={styles.instruction}>
+              Error: {JSON.stringify(error)}
             </Text>
           }
         </View>

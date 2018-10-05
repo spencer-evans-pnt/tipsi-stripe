@@ -14,8 +14,8 @@ import SourceScreen from './scenes/SourceScreen'
 import testID from './utils/testID'
 
 stripe.setOptions({
-  publishableKey: '<PUBLISHABLE_KEY>',
-  merchantId: '<MERCHANT_ID>',
+  publishableKey: 'pk_test_qzT2FmZPT8GzbZSXoRNDXSDZ',
+  merchantId: null,
   androidPayMode: 'test',
 })
 

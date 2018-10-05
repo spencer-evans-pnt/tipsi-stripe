@@ -17,6 +17,7 @@ export const availableSourceTypes = [
   'sofort',
   'threeDSecure',
   'alipay',
+  'card',
 ]
 
 export const setOptionsOptionsPropTypes = {
@@ -152,4 +153,23 @@ export const createSourceWithParamsPropType = {
   postalCode: PropTypes.string,
   country: PropTypes.string,
   card: PropTypes.string,
+
+  number: PropTypes.string,
+  expMonth: PropTypes.number,
+  expYear: PropTypes.number,
+  cvc: PropTypes.string,
+  // name: PropTypes.string,
+  // addressLine1: PropTypes.string,
+  addressLine2: PropTypes.string,
+  addressCity: PropTypes.string,
+  addressState: PropTypes.string,
+  addressZip: PropTypes.string,
+  addressCountry: PropTypes.string,
+  brand: PropTypes.string,
+  last4: PropTypes.string,
+  fingerprint: PropTypes.string,
+  funding: PropTypes.string,
+  // country: PropTypes.string,
+  // currency: PropTypes.string,
+  id: PropTypes.string,
 }
