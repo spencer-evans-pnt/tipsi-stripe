@@ -251,7 +251,9 @@ RCT_EXPORT_METHOD(createSourceWithParams:(NSDictionary *)params
     }
 
     requestIsCompleted = NO;
-
+    promiseResolver = resolve;
+    promiseRejector = reject;
+    
     NSString *sourceType = params[@"type"];
     STPSourceParams *sourceParams;
     if ([sourceType isEqualToString:@"bancontact"]) {
@@ -690,13 +692,13 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [result setValue:owner forKey:@"owner"];
 
         if (source.owner.address) {
-            [owner setValue:[self address:source.owner.address] forKey:@"address"];
+            [owner setValue:source.owner.address forKey:@"address"];
         }
         [owner setValue:source.owner.email forKey:@"email"];
         [owner setValue:source.owner.name forKey:@"name"];
         [owner setValue:source.owner.phone forKey:@"phone"];
         if (source.owner.verifiedAddress) {
-            [owner setValue:[self address:source.owner.verifiedAddress] forKey:@"verifiedAddress"];
+            [owner setValue:source.owner.verifiedAddress forKey:@"verifiedAddress"];
         }
         [owner setValue:source.owner.verifiedEmail forKey:@"verifiedEmail"];
         [owner setValue:source.owner.verifiedName forKey:@"verifiedName"];

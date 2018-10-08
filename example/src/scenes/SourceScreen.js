@@ -23,7 +23,8 @@ export default class SourceScreen extends PureComponent {
         currency: 'USD',
         name: 'Joe Shmo',
         
-        number: '1111222233334444',
+        //number: '1111424242424242',
+        number: '4242424242424242',
         expMonth: 1,
         expYear: 2020,
         cvc: '123',
