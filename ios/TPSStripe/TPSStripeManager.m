@@ -692,13 +692,13 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
         [result setValue:owner forKey:@"owner"];
 
         if (source.owner.address) {
-            [owner setValue:source.owner.address forKey:@"address"];
+            [owner setValue:[self addressToDict:source.owner.address] forKey:@"address"];
         }
         [owner setValue:source.owner.email forKey:@"email"];
         [owner setValue:source.owner.name forKey:@"name"];
         [owner setValue:source.owner.phone forKey:@"phone"];
         if (source.owner.verifiedAddress) {
-            [owner setValue:source.owner.verifiedAddress forKey:@"verifiedAddress"];
+            [owner setValue:[self addressToDict:source.owner.verifiedAddress] forKey:@"verifiedAddress"];
         }
         [owner setValue:source.owner.verifiedEmail forKey:@"verifiedEmail"];
         [owner setValue:source.owner.verifiedName forKey:@"verifiedName"];
@@ -1060,6 +1060,22 @@ RCT_EXPORT_METHOD(openApplePaySetup) {
     [address setCountry:inputAddress[@"country"]];
     [address setPhone:inputAddress[@"phone"]];
     [address setEmail:inputAddress[@"email"]];
+
+    return address;
+}
+
+- (NSDictionary *)addressToDict:(STPAddress *)inputAddress {
+    NSMutableDictionary *address = [[NSMutableDictionary alloc] init];
+
+    [address setValue:inputAddress.name forKey:@"name"];
+    [address setValue:inputAddress.line1 forKey:@"line1"];
+    [address setValue:inputAddress.line2 forKey:@"line2"];
+    [address setValue:inputAddress.city forKey:@"city"];
+    [address setValue:inputAddress.state forKey:@"state"];
+    [address setValue:inputAddress.postalCode forKey:@"postalCode"];
+    [address setValue:inputAddress.country forKey:@"country"];
+    [address setValue:inputAddress.phone forKey:@"phone"];
+    [address setValue:inputAddress.email forKey:@"email"];
 
     return address;
 }
